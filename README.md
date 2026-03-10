@@ -95,7 +95,7 @@ house-price-prediction
 This project also includes a Streamlit app where users can enter housing features and get a predicted median house value.
 Below is the Streamlit application used to predict house prices.
 
-![App Screenshot](assets/app_demo.png)
+![App Screenshot](app_demo.png)
 
 Run locally with:
 
