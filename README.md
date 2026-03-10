@@ -75,6 +75,9 @@ Higher-income areas and coastal locations tend to have higher house prices.
 - Matplotlib
 - Jupyter Notebook
 
+## Project Structure
+
+```
 house-price-prediction
 │
 ├── data
@@ -86,5 +89,4 @@ house-price-prediction
 ├── requirements.txt
 │
 └── README.md
-
-## Project Structure
+```
