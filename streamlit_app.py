@@ -18,14 +18,18 @@ def train_model():
     X = df.drop("median_house_value", axis=1)
     y = df["median_house_value"]
 
+    # Convert text column to numeric dummy columns
+    X = pd.get_dummies(X, columns=["ocean_proximity"])
+
     model = RandomForestRegressor(
         n_estimators=100,
         random_state=42
     )
     model.fit(X, y)
-    return model
 
-model = train_model()
+    return model, X.columns
+
+model, training_columns = train_model()
 
 st.subheader("Input features")
 
@@ -37,6 +41,12 @@ total_bedrooms = st.number_input("Total bedrooms", min_value=1.0, value=129.0)
 population = st.number_input("Population", min_value=1.0, value=322.0)
 households = st.number_input("Households", min_value=1.0, value=126.0)
 median_income = st.number_input("Median income", min_value=0.0, value=8.3252, format="%.4f")
+
+ocean_proximity = st.selectbox(
+    "Ocean proximity",
+    ["<1H OCEAN", "INLAND", "ISLAND", "NEAR BAY", "NEAR OCEAN"],
+    index=3
+)
 
 if st.button("Predict house price"):
     rooms_per_household = total_rooms / households if households else 0
@@ -52,10 +62,16 @@ if st.button("Predict house price"):
         "population": population,
         "households": households,
         "median_income": median_income,
+        "ocean_proximity": ocean_proximity,
         "rooms_per_household": rooms_per_household,
         "bedrooms_per_room": bedrooms_per_room,
         "population_per_household": population_per_household
     }])
+
+    input_df = pd.get_dummies(input_df, columns=["ocean_proximity"])
+
+    # Match training columns exactly
+    input_df = input_df.reindex(columns=training_columns, fill_value=0)
 
     prediction = model.predict(input_df)[0]
     st.metric("Predicted median house value", f"${prediction:,.0f}")
