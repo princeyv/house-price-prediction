@@ -9,7 +9,7 @@ st.write("Enter housing details and get a predicted median house value.")
 
 @st.cache_resource
 def train_model():
-    df = pd.read_csv("housing.csv")
+    df = pd.read_csv("data/housing.csv")
 
     df["rooms_per_household"] = df["total_rooms"] / df["households"]
     df["bedrooms_per_room"] = df["total_bedrooms"] / df["total_rooms"]
