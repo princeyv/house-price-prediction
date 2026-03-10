@@ -1,0 +1,4 @@
+Model,RMSE
+Linear Regression,68311.8562967575
+Decision Tree,70442.24021897535
+Random Forest,50709.54569570516
