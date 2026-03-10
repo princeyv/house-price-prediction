@@ -11,6 +11,13 @@ The goal is to demonstrate a full data science workflow including:
 - Model comparison
 - Model evaluation
 
+## Live Demo
+
+Try the deployed app here:
+
+[https://house-price-prediction-princeyv.streamlit.app
+](https://house-price-prediction-princeyv.streamlit.app/)
+
 ## Dataset
 
 California Housing Dataset
