@@ -1,57 +1,24 @@
-from pathlib import Path
-import joblib
-import pandas as pd
-import streamlit as st
-
-st.set_page_config(page_title="House Price Predictor", layout="centered")
-st.title("California House Price Predictor")
-st.write("Enter housing details and get a predicted median house value.")
-
-MODEL_PATH = Path(__file__).resolve().parent / "models" / "random_forest_housing.pkl"
-
 @st.cache_resource
-def load_model():
-    return joblib.load(MODEL_PATH)
+def train_model():
 
-model = load_model()
+    df = pd.read_csv("data/housing.csv")
 
-st.subheader("Input features")
-longitude = st.number_input("Longitude", value=-122.23, format="%.2f")
-latitude = st.number_input("Latitude", value=37.88, format="%.2f")
-housing_median_age = st.number_input("Housing median age", min_value=1.0, value=41.0)
-total_rooms = st.number_input("Total rooms", min_value=1.0, value=880.0)
-total_bedrooms = st.number_input("Total bedrooms", min_value=1.0, value=129.0)
-population = st.number_input("Population", min_value=1.0, value=322.0)
-households = st.number_input("Households", min_value=1.0, value=126.0)
-median_income = st.number_input("Median income", min_value=0.0, value=8.3252, format="%.4f")
+    df["rooms_per_household"] = df["total_rooms"] / df["households"]
+    df["bedrooms_per_room"] = df["total_bedrooms"] / df["total_rooms"]
+    df["population_per_household"] = df["population"] / df["households"]
 
-if st.button("Predict house price"):
-    rooms_per_household = total_rooms / households if households else 0
-    bedrooms_per_room = total_bedrooms / total_rooms if total_rooms else 0
-    population_per_household = population / households if households else 0
+    X = df.drop("median_house_value", axis=1)
+    y = df["median_house_value"]
 
-    input_df = pd.DataFrame([
-        {
-            "longitude": longitude,
-            "latitude": latitude,
-            "housing_median_age": housing_median_age,
-            "total_rooms": total_rooms,
-            "total_bedrooms": total_bedrooms,
-            "population": population,
-            "households": households,
-            "median_income": median_income,
-            "rooms_per_household": rooms_per_household,
-            "bedrooms_per_room": bedrooms_per_room,
-            "population_per_household": population_per_household,
-        }
-    ])
+    from sklearn.ensemble import RandomForestRegressor
 
-    prediction = float(model.predict(input_df)[0])
-    st.metric("Predicted median house value", f"${prediction:,.0f}")
+    model = RandomForestRegressor(
+        n_estimators=100,
+        random_state=42
+    )
 
-    with st.expander("See engineered features"):
-        st.write({
-            "rooms_per_household": rooms_per_household,
-            "bedrooms_per_room": bedrooms_per_room,
-            "population_per_household": population_per_household,
-        })
+    model.fit(X, y)
+
+    return model
+
+model = train_model()
