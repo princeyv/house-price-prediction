@@ -90,3 +90,11 @@ house-price-prediction
 │
 └── README.md
 ```
+## App Demo
+
+This project also includes a Streamlit app where users can enter housing features and get a predicted median house value.
+
+Run locally with:
+
+```bash
+streamlit run streamlit_app.py
