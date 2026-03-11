@@ -85,17 +85,31 @@ Higher-income areas and coastal locations tend to have higher house prices.
 ## Project Structure
 
 ```
-house-price-prediction
+HOUSEPROJECT
+│
+├── .venv
+├── .vscode
+├── assets
+│   └── app_demo.png
 │
 ├── data
 │   └── housing.csv
 │
+├── HouseProject/models
+│   └── model_results.csv
+│
+├── models
+│   ├── model_results.csv
+│   └── random_forest_housing.pkl
+│
 ├── notebooks
 │   └── eda.ipynb
 │
+├── house_price_prediction.ipynb
+├── housing.csv
+├── streamlit_app.py
+├── README.md
 ├── requirements.txt
-│
-└── README.md
 ```
 ## App Demo
 
